@@ -1,10 +1,9 @@
 {% extends 'base/main.html'%}
 
-
 {% block title%}Home Page{%endblock%}
-
+{% include 'navbar.html' %}
 {% block content%}
-<h1>Home Page </h1><hr>
+
 <style>
     .home-container{
         display: grid; 
@@ -12,29 +11,32 @@
     }
 </style>
 
-
 <div class="home-container">
     <div>
         <h3>
             Browse Topics:
+            <div>
+                <a href="{% url 'Home' %}">All</a>
+                <br>
+            </div>
             {% for topic in topics %}
             <div>
                 <a href="{% url 'Home' %}?q={{ topic.name }}">{{topic.name}}</a>
                 <br>
             </div>
             {% endfor %}
-        </h3><hr>
+        </h3>
     </div>
     
-    
-    
-    
     <div>
+        <h5>{{room_count}} room available </h5>
         <a href="{% url 'createRoom' %}"> Create Room </a>
         {% for i in data%}
             <div>
                 <span>@{{i.host.username}} </span>
-                <h2> {{i.name}}</h2>
+                <a href="/room/{{ i.id }}">
+                    <h2> {{i.name}}</h2>
+                </a>
                 <small>
                         {{i.topic.name}}
                 </small>

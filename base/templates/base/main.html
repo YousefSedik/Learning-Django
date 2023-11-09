@@ -6,17 +6,33 @@
     <title>{% block title%}{%endblock%}</title>
 </head>
 <body>
-
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
     {% for obj in rooms %}
     <div>
         {{obj.id}} - <a href="{{obj.id}}">{{obj.Room}}</a>
     </div>
     {% endfor %}
+    
+<a href="{% url 'Home' %}"><h1>Home Page </h1><hr></a>
+<a href="{% url 'login' %}"> login </a>
+<br>    
+
+<form action="{% url 'Home' %}" method=get>
+    <input type="text" name = 'q' placeholder="Search Rooms... " > 
 
     {% block home%}{%endblock%}
     {% block Rooms%}{%endblock%}
     
     {% block content%}{%endblock%}
 
+    
+</form>
 </body> 
 </html>

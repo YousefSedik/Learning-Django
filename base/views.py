@@ -1,25 +1,50 @@
 from django.shortcuts import render, redirect
 from .models import Room, Topic, Message
 from .forms import RoomForm 
-
+from django.db.models import Q 
+from django.contrib.auth.models import User
+from django.contrib.messages import constants as messages 
 
 # Create your views here.
 rooms = [{"name":"frontend", "id":1}, {"name":"backend", "id":2},{"name":"AI", "id":3}]
 
+
+def loginPage(re):
+    context = {} 
+    
+    if re.method == 'POST':
+        
+        username = re.POST.get('username') 
+        password = re.POST.get('password')
+        print(username, password)
+        try:
+            user = User.objects.get(username= username)
+        except:
+            messages.error(re, "user doesn't exist")
+            
+    return render(re, 'base/login_register.html', context)
+
 def Home(request):
     
-    rooms = Room.objects.all()
-    context = {'data': rooms}    
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    
+    rooms = Room.objects.filter(Q(topic__name__contains=q) |
+                                Q(name__icontains=q) |
+                                Q(description__icontains = q)
+                                ) 
+
+    context = {'data': rooms}        
     topics = Topic.objects.all()
+    room_count = rooms.count()
+    context['room_count'] = room_count
     context['topics'] = topics
     return render(request, 'base/home.html', context)
 
 def room(re):
-    rooms = Room.objects.all()
-    context = {'room': rooms}
-    return render(re, 'base/room.html', context)
+    return render(re, 'base/room.html')
 
 def RoomSpeci(re, pk):
+    rooms = Room.objects.all()
     
     room = None 
     for i in rooms:
