@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title%}{%endblock%}</title>
+</head>
+<body>
+
+    {% for obj in rooms %}
+    <div>
+        {{obj.id}} - <a href="{{obj.id}}">{{obj.Room}}</a>
+    </div>
+    {% endfor %}
+
+    {% block home%}{%endblock%}
+    {% block Rooms%}{%endblock%}
+    
+    {% block content%}{%endblock%}
+
+</body> 
+</html>
